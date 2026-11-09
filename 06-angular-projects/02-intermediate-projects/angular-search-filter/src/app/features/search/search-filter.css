@@ -1,0 +1,13 @@
+:host { display: block; max-width: 1000px; margin: 0 auto; }
+.directory { background: white; border: 1px solid #e7eaf1; border-radius: 22px; padding: 32px; box-shadow: 0 18px 55px #25345b0c; }
+.eyebrow { color: #6757d9; font-size: .72rem; font-weight: 800; letter-spacing: .13em; }
+h1 { margin: 8px 0; font-size: clamp(1.8rem, 4vw, 2.5rem); } header p, .person p { color: #68738a; }
+.toolbar { display: flex; gap: 10px; margin: 26px 0 12px; flex-wrap: wrap; }
+input, select, .sort { border: 1px solid #dce1eb; border-radius: 10px; padding: 12px; background: white; }
+input { flex: 1 1 240px; } select { flex: 1 1 180px; } .sort { color: #5141c8; font-weight: 700; }
+.count { color: #68738a; font-size: .85rem; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin-top: 18px; }
+.person { display: flex; gap: 14px; align-items: center; border: 1px solid #edf0f5; border-radius: 14px; padding: 16px; }
+.avatar { display: grid; place-items: center; width: 44px; height: 44px; flex: 0 0 44px; border-radius: 50%; background: #eeeaff; color: #5141c8; font-weight: 800; }
+.person h2 { font-size: 1rem; margin: 0; } .person p { margin: 4px 0; font-size: .88rem; } .person span { color: #5141c8; font-size: .75rem; font-weight: 700; }
+.empty { text-align: center; padding: 48px 12px; color: #68738a; }

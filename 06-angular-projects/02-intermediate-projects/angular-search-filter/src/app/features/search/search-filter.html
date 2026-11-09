@@ -1,0 +1,23 @@
+<section class="directory">
+  <header><span class="eyebrow">TEAM DIRECTORY</span><h1>Find your people</h1><p>Search colleagues by name, role, or department.</p></header>
+  <div class="toolbar">
+    <input #search type="search" placeholder="Search people..." [value]="query()" (input)="setQuery(search.value)" aria-label="Search people">
+    <select #dept [value]="department()" (change)="setDepartment(dept.value)" aria-label="Filter department">
+      @for (item of departments; track item) { <option [value]="item">{{ item }} departments</option> }
+    </select>
+    <button type="button" class="sort" (click)="toggleSort()">Name {{ sortOrder() === 'asc' ? '↑' : '↓' }}</button>
+  </div>
+  <p class="count">{{ filteredPeople().length }} people found</p>
+  @if (filteredPeople().length) {
+    <div class="grid">
+      @for (person of filteredPeople(); track person.id) {
+        <article class="person">
+          <div class="avatar">{{ person.name.charAt(0) }}</div>
+          <div><h2>{{ person.name }}</h2><p>{{ person.role }}</p><span>{{ person.department }}</span></div>
+        </article>
+      }
+    </div>
+  } @else {
+    <div class="empty"><strong>No matching people</strong><p>Try another search term or department.</p></div>
+  }
+</section>
