@@ -1,0 +1,19 @@
+:host { display:block; min-height:100vh; }
+* { box-sizing:border-box; }
+.layout { display:grid; grid-template-columns:245px 1fr; min-height:100vh; }
+.sidebar { background:#14213a; color:#e8eef9; padding:25px 17px; display:flex; flex-direction:column; }
+.brand { display:flex; align-items:center; gap:11px; font-size:13px; font-weight:800; letter-spacing:1px; line-height:1.4; }
+.brand small { color:#8fa2c1; font-size:9px; letter-spacing:1.2px; }
+.brand-mark { width:36px; height:36px; display:grid; place-items:center; border-radius:10px; background:#4569c4; font-size:20px; }
+.nav-label { margin:44px 10px 12px; color:#7f91af; font-size:9px; font-weight:800; letter-spacing:1.4px; }
+nav { display:flex; flex-direction:column; gap:6px; }
+nav a { display:flex; align-items:center; gap:12px; padding:12px; border-radius:8px; color:#aebbd0; text-decoration:none; font-size:13px; }
+nav a:hover, nav a.active { color:white; background:#263b60; }
+.sidebar-bottom { margin-top:auto; padding:15px 9px 0; color:#8fa2c1; font-size:10px; line-height:1.8; }
+.sidebar-bottom small { color:#7487a7; }
+.main { min-width:0; background:#f4f6fa; }
+.topbar { height:66px; display:flex; align-items:center; justify-content:space-between; padding:0 32px; background:white; border-bottom:1px solid #e8ecf2; color:#738097; font-size:12px; }
+.topbar strong { color:#28354c; }
+.user { color:#34435d; font-weight:700; }
+.content { padding:30px 32px; }
+@media(max-width:700px) { .layout { grid-template-columns:1fr; } .sidebar { padding:14px; } .nav-label,.sidebar-bottom { display:none; } nav { flex-direction:row; margin-top:14px; } nav a { flex:1; justify-content:center; } .topbar { padding:0 16px; } .content { padding:20px 14px; } }
