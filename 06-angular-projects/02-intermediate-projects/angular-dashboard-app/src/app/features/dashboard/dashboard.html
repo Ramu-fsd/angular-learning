@@ -1,0 +1,21 @@
+<div class="shell">
+  <aside class="sidebar"><div class="logo">northstar<span>.</span></div><p class="nav-label">WORKSPACE</p><a class="active">▦ Overview</a><a>◫ Analytics</a><a>♧ Customers</a><a>▤ Reports</a><div class="profile"><div class="avatar">RB</div><div><strong>Ramu Boya</strong><small>Workspace admin</small></div></div></aside>
+  <main class="main">
+    <header class="top"><div><span class="eyebrow">MONDAY, OCTOBER 12</span><h1>Good morning, Ramu</h1><p>Here is what is happening with your business today.</p></div><button type="button">Download report ↓</button></header>
+    <section class="stats">
+      <app-stat-card label="Total revenue" value="$48,294" change="+12.8% vs last month" [positive]="true" />
+      <app-stat-card label="Orders" value="1,284" change="+8.2% vs last month" [positive]="true" />
+      <app-stat-card label="Customers" value="8,549" change="+5.4% vs last month" [positive]="true" />
+      <app-stat-card label="Conversion rate" value="3.62%" change="-0.4% vs last month" />
+    </section>
+    <section class="chart-panel"><div class="panel-heading"><div><h2>Revenue overview</h2><p>Monthly revenue · sample data</p></div><span class="legend">● Revenue</span></div>
+      <div class="chart" role="img" aria-label="Bar chart showing monthly revenue values">
+        @for (value of revenue; track $index) { <div class="bar-wrap"><div class="bar" [style.height.%]="value"></div><span>{{ months[$index] }}</span></div> }
+      </div>
+    </section>
+    <section class="activity"><div class="panel-heading"><div><h2>Recent activity</h2><p>Latest updates from your workspace</p></div><a>View all</a></div>
+      @for (item of activities; track item.name) { <div class="activity-row"><div class="activity-icon">↗</div><div class="activity-copy"><strong>{{ item.name }}</strong><small>{{ item.detail }}</small></div><b>{{ item.amount }}</b></div> }
+    </section>
+    <footer>Dashboard demo · All metrics are illustrative sample data.</footer>
+  </main>
+</div>
