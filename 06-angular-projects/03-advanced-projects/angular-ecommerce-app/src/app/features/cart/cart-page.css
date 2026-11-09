@@ -1,0 +1,8 @@
+:host { display: block; max-width: 850px; margin: 0 auto; } .cart { background: white; border: 1px solid #e7e5df; border-radius: 18px; padding: 28px; }
+.eyebrow { color: #a05e43; font-size: .72rem; font-weight: 800; letter-spacing: .13em; } h1 { margin: 8px 0 24px; font-size: 2.2rem; }
+.line { display: flex; align-items: center; gap: 16px; padding: 16px 0; border-top: 1px solid #eee; } .swatch { width: 68px; height: 68px; border-radius: 10px; flex: 0 0 68px; }
+.copy { display: grid; gap: 4px; flex: 1; } .copy small { color: #8a8279; } .quantity { display: flex; align-items: center; gap: 12px; } button { border: 1px solid #ddd9d1; background: white; border-radius: 7px; padding: 6px 10px; }
+.remove { color: #a04b42; border: 0; } .summary { display: flex; justify-content: space-between; padding: 22px 0; border-top: 1px solid #eee; font-size: 1.1rem; }
+.checkout { display: block; text-align: center; background: #302c28; color: white; text-decoration: none; padding: 14px; border-radius: 9px; font-weight: 700; }
+.empty { padding: 50px 10px; text-align: center; color: #777; } .empty a { color: #a05e43; }
+@media (max-width: 600px) { .line { flex-wrap: wrap; } .copy { min-width: 140px; } }

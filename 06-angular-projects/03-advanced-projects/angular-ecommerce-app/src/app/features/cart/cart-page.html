@@ -1,0 +1,14 @@
+<section class="cart"><span class="eyebrow">YOUR SELECTION</span><h1>Shopping cart</h1>
+  @for (line of cart.items(); track line.product.id) {
+    <article class="line"><div class="swatch" [style.background]="line.product.color"></div><div class="copy"><strong>{{ line.product.name }}</strong><small>{{ line.product.category }}</small><b>{{ line.product.price | currency:'USD' }}</b></div>
+      <div class="quantity"><button type="button" (click)="cart.changeQuantity(line.product.id, line.quantity - 1)" aria-label="Decrease quantity">−</button><span>{{ line.quantity }}</span><button type="button" (click)="cart.changeQuantity(line.product.id, line.quantity + 1)" aria-label="Increase quantity">+</button></div>
+      <button class="remove" type="button" (click)="cart.remove(line.product.id)">Remove</button>
+    </article>
+  } @empty {
+    <div class="empty"><p>Your cart is waiting for something lovely.</p><a routerLink="/">Explore products</a></div>
+  }
+  @if (cart.items().length) {
+    <div class="summary"><span>Subtotal</span><strong>{{ cart.subtotal() | currency:'USD' }}</strong></div>
+    <a class="checkout" routerLink="/checkout">Continue to checkout</a>
+  }
+</section>

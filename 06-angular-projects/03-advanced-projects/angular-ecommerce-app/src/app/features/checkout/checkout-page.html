@@ -1,0 +1,21 @@
+<section class="checkout-page">
+  @if (orderPlaced()) {
+    <div class="success"><span>✓</span><h1>Demo order received</h1><p>This is a portfolio demonstration. No payment was collected and no order was sent to a server.</p><a routerLink="/">Return to store</a></div>
+  } @else {
+    <span class="eyebrow">ALMOST YOURS</span><h1>Checkout</h1>
+    @if (cart.items().length) {
+      <div class="layout">
+        <form [formGroup]="form" (ngSubmit)="placeOrder()" novalidate>
+          <label for="fullName">Full name</label><input id="fullName" formControlName="fullName" autocomplete="name">
+          @if (form.controls.fullName.touched && form.controls.fullName.invalid) { <small>Please enter your name.</small> }
+          <label for="email">Email</label><input id="email" type="email" formControlName="email" autocomplete="email">
+          @if (form.controls.email.touched && form.controls.email.invalid) { <small>Enter a valid email address.</small> }
+          <label for="address">Delivery address</label><textarea id="address" rows="3" formControlName="address" autocomplete="street-address"></textarea>
+          @if (form.controls.address.touched && form.controls.address.invalid) { <small>Enter an address (at least 8 characters).</small> }
+          <button type="submit">Place demo order</button>
+        </form>
+        <aside><h2>Order summary</h2>@for (line of cart.items(); track line.product.id) { <p>{{ line.product.name }} × {{ line.quantity }} <strong>{{ line.product.price * line.quantity | currency:'USD' }}</strong></p> }<hr><b>Total <strong>{{ cart.subtotal() | currency:'USD' }}</strong></b></aside>
+      </div>
+    } @else { <p>Your cart is empty. <a routerLink="/">Browse products</a>.</p> }
+  }
+</section>

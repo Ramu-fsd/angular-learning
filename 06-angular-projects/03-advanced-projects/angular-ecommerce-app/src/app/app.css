@@ -1,0 +1,6 @@
+:host { display: block; min-height: 100vh; }
+.nav { height: 70px; display: flex; justify-content: space-between; align-items: center; padding: 0 max(22px, calc((100% - 1120px)/2)); background: white; border-bottom: 1px solid #e7eaf1; }
+.brand { font-weight: 950; font-size: 1.4rem; text-decoration: none; letter-spacing: -.06em; } .brand span { color: #c36c4b; }
+nav { display: flex; gap: 22px; } nav a { text-decoration: none; font-weight: 700; color: #4b5568; }
+main { max-width: 1120px; margin: 0 auto; padding: 34px 22px 60px; min-height: calc(100vh - 130px); }
+.site-footer { text-align: center; padding: 22px; color: #8a93a4; font-size: .8rem; border-top: 1px solid #e7eaf1; }

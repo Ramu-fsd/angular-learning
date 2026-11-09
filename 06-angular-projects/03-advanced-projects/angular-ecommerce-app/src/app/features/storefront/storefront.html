@@ -1,0 +1,14 @@
+<section class="hero"><span>THE EVERYDAY EDIT</span><h1>Useful things.<br>Beautifully considered.</h1><p>Thoughtful objects for work, home, and everything in between.</p></section>
+<div class="section-head"><div><span class="eyebrow">SHOP THE COLLECTION</span><h2>Featured products</h2></div>
+  <select #categorySelect [value]="category()" (change)="setCategory(categorySelect.value)" aria-label="Filter products">
+    @for (item of categories; track item) { <option [value]="item">{{ item }}</option> }
+  </select>
+</div>
+<div class="grid">
+  @for (product of visibleProducts; track product.id) {
+    <article class="product"><div class="art" [style.background]="product.color"><strong>{{ product.name }}</strong><span>{{ product.category }}</span></div>
+      <div class="details"><div><h3>{{ product.name }}</h3><p>{{ product.description }}</p><b>{{ product.price | currency:'USD' }}</b></div>
+        <button type="button" (click)="cart.add(product)">Add to cart</button></div>
+    </article>
+  }
+</div>
