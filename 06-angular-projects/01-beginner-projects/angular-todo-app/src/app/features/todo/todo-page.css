@@ -1,0 +1,12 @@
+:host { display: block; max-width: 760px; margin: 0 auto; }
+.todo { background: white; border: 1px solid #e7eaf1; border-radius: 22px; padding: 32px; box-shadow: 0 18px 55px #25345b0c; }
+.eyebrow { color: #6757d9; font-size: .72rem; font-weight: 800; letter-spacing: .12em; }
+h1 { font-size: 2.2rem; margin: 8px 0 2px; } header p, footer { color: #68738a; }
+.add-form { display: flex; gap: 10px; margin: 26px 0 16px; } input:not([type=checkbox]) { min-width: 0; flex: 1; border: 1px solid #dce1eb; border-radius: 10px; padding: 12px; }
+button { border: 0; border-radius: 9px; padding: 10px 13px; background: #f0efff; color: #5141c8; font-weight: 700; }
+.primary { background: #5141c8; color: white; } .filters { display: flex; gap: 8px; padding: 12px 0; border-bottom: 1px solid #edf0f5; }
+.filters .selected { background: #5141c8; color: white; }
+ul { list-style: none; padding: 0; margin: 0; } li { display: flex; gap: 10px; align-items: center; padding: 14px 2px; border-bottom: 1px solid #edf0f5; }
+.task { flex: 1; overflow-wrap: anywhere; } .done { text-decoration: line-through; color: #9aa2b1; } .delete { background: #fff0f1; color: #bd3548; } .text-button { background: transparent; }
+.empty { color: #68738a; justify-content: center; padding: 28px; } footer { font-size: .8rem; margin-top: 18px; }
+@media (max-width: 520px) { .todo { padding: 22px 16px; } .add-form { flex-direction: column; } li { flex-wrap: wrap; } }

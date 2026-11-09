@@ -1,0 +1,30 @@
+<section class="todo">
+  <header><span class="eyebrow">MAKE SPACE FOR WHAT MATTERS</span><h1>My tasks</h1><p>{{ service.remaining() }} tasks remaining</p></header>
+  <form class="add-form" (ngSubmit)="add()">
+    <input name="draft" [ngModel]="draft()" (ngModelChange)="draft.set($event)" placeholder="What needs to get done?" aria-label="New task">
+    <button class="primary" type="submit" [disabled]="!draft().trim()">Add task</button>
+  </form>
+  <nav class="filters" aria-label="Task filters">
+    <button type="button" [class.selected]="filter() === 'all'" (click)="filter.set('all')">All</button>
+    <button type="button" [class.selected]="filter() === 'active'" (click)="filter.set('active')">Active</button>
+    <button type="button" [class.selected]="filter() === 'completed'" (click)="filter.set('completed')">Completed</button>
+  </nav>
+  <ul>
+    @for (todo of visibleTodos(); track todo.id) {
+      <li>
+        <input type="checkbox" [checked]="todo.completed" (change)="service.toggle(todo.id)" [attr.aria-label]="'Complete ' + todo.title">
+        @if (editingId() === todo.id) {
+          <input class="edit-input" [value]="editTitle()" (input)="editTitle.set($any($event.target).value)" (keyup.enter)="saveEdit(todo.id)" aria-label="Edit task">
+          <button type="button" (click)="saveEdit(todo.id)">Save</button>
+        } @else {
+          <span class="task" [class.done]="todo.completed">{{ todo.title }}</span>
+          <button type="button" class="text-button" (click)="beginEdit(todo.id, todo.title)">Edit</button>
+        }
+        <button type="button" class="delete" (click)="service.remove(todo.id)" [attr.aria-label]="'Delete ' + todo.title">Delete</button>
+      </li>
+    } @empty {
+      <li class="empty">Nothing here yet. Add a task to get started.</li>
+    }
+  </ul>
+  <footer>Tasks are saved in this browser using LocalStorage.</footer>
+</section>
