@@ -1,0 +1,32 @@
+:host{display:block;color:#18243a}
+*{box-sizing:border-box}
+.shell{max-width:1150px;margin:0 auto;padding:34px}
+header{margin-bottom:24px}
+.eyebrow{color:#687791;font-size:10px;font-weight:800;letter-spacing:1.4px}
+h1{margin:6px 0;font-size:clamp(25px,3vw,34px);letter-spacing:-.8px}
+h2{margin:0 0 18px;font-size:18px}
+.muted,.note{color:#7b879a;font-size:13px}
+.panel{background:white;border:1px solid #e7ebf2;border-radius:13px;padding:22px;margin-bottom:18px;box-shadow:0 5px 20px #15223b08}
+.layer{display:flex;align-items:center;gap:14px;border:1px solid #dfe6f2;border-radius:9px;padding:13px;background:#f9fbff}
+.layer>b{display:grid;place-items:center;width:30px;height:30px;border-radius:8px;background:#e7edff;color:#3158b7}
+.layer span{display:flex;flex-direction:column;gap:4px}
+.layer strong{font-size:13px}.layer small{font-size:11px;color:#78859a}
+.connector{text-align:center;color:#8794a8;font-size:11px;padding:7px}
+.domain-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.domain{background:#edf5f2;color:#24684f;text-align:center;padding:13px 7px;border-radius:8px;font-size:12px;font-weight:700}
+.calculator{margin-top:18px}
+.inputs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}
+label{display:flex;flex-direction:column;gap:10px;color:#69768c;font-size:12px}
+label strong{color:#25334c;font-size:16px}
+input[type=range]{width:100%;accent-color:#3158b7}
+select{height:38px;border:1px solid #dce2eb;border-radius:7px;padding:0 10px;background:white}
+.results{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}
+.results article{padding:17px;background:#f2f5fc;border-radius:9px}
+.results span{display:block;color:#77849a;font-size:11px}
+.results strong{display:block;margin-top:7px;color:#3158b7;font-size:24px}
+.note{margin-top:14px;font-size:11px}
+.nfr-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.nfr-grid article{background:#f8faff;border:1px solid #edf0f5;border-radius:8px;padding:14px}
+.nfr-grid b{font-size:12px}.nfr-grid p{color:#77849a;font-size:11px;line-height:1.6}
+footer{color:#8994a6;font-size:11px;padding-bottom:20px}
+@media(max-width:700px){.shell{padding:22px 14px}.inputs,.nfr-grid{grid-template-columns:1fr}.results{grid-template-columns:1fr}.domain-grid{grid-template-columns:1fr}}
