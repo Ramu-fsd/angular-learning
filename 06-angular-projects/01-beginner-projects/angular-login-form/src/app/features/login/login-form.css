@@ -1,0 +1,12 @@
+:host { width: min(100%, 430px); }
+.panel { background: #fff; border: 1px solid #e7eaf1; border-radius: 22px; padding: 34px; box-shadow: 0 18px 55px #25345b12; }
+.brand-mark { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 14px; background: #5141c8; color: white; font-weight: 800; }
+.eyebrow { margin: 24px 0 6px; color: #6757d9; font-size: .72rem; font-weight: 800; letter-spacing: .13em; }
+h1 { margin: 0; font-size: 2rem; } .muted, .footnote { color: #68738a; line-height: 1.5; }
+form { display: grid; gap: 9px; margin-top: 24px; } label { font-weight: 700; font-size: .9rem; }
+input { width: 100%; border: 1px solid #dce1eb; border-radius: 10px; padding: 13px; outline-color: #6757d9; }
+.password-field { display: flex; position: relative; } .password-field input { padding-right: 65px; }
+.show { position: absolute; right: 8px; top: 7px; border: 0; background: transparent; color: #5141c8; padding: 6px; }
+.error { color: #c0394b; } .submit { margin-top: 12px; border: 0; border-radius: 10px; padding: 13px; background: #5141c8; color: white; font-weight: 800; }
+.success { margin-top: 18px; padding: 12px; border-radius: 10px; background: #eaf8f0; color: #176b3b; font-size: .9rem; }
+.footnote { font-size: .78rem; margin: 20px 0 0; }
