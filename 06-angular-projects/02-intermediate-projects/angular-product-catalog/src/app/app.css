@@ -1,0 +1,4 @@
+:host { display: block; min-height: 100vh; }
+.topbar { height: 68px; display: flex; align-items: center; justify-content: space-between; padding: 0 max(24px, calc((100% - 1100px)/2)); background: white; border-bottom: 1px solid #e7eaf1; color: #68738a; font-size: .85rem; }
+.brand { color: #172033; text-decoration: none; font-size: 1.25rem; font-weight: 900; } .brand span { color: #6757d9; }
+.content { max-width: 1100px; margin: 0 auto; padding: 36px 22px; }

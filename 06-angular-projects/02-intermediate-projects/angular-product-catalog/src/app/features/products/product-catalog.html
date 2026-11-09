@@ -1,0 +1,20 @@
+<section class="heading"><span class="eyebrow">CURATED ESSENTIALS</span><h1>Thoughtful products, everyday.</h1><p>Explore a small catalog of useful objects for work and life.</p></section>
+<div class="toolbar">
+  <input #search type="search" placeholder="Search products..." [value]="query()" (input)="updateQuery(search.value)" aria-label="Search products">
+  <select #categorySelect [value]="category()" (change)="updateCategory(categorySelect.value)" aria-label="Filter category">
+    @for (item of categories; track item) { <option [value]="item">{{ item }} categories</option> }
+  </select>
+  <select #sortSelect [value]="sort()" (change)="updateSort(sortSelect.value)" aria-label="Sort products">
+    <option value="featured">Featured</option><option value="low">Price: low to high</option><option value="high">Price: high to low</option>
+  </select>
+</div>
+<p class="result-count">{{ filtered().length }} products</p>
+<div class="grid">
+  @for (product of visible(); track product.id) {
+    <article class="product">
+      <div class="art" [style.background]="product.color"><span>{{ product.category }}</span><strong>{{ product.name }}</strong></div>
+      <div class="details"><div><h2>{{ product.name }}</h2><p>{{ product.description }}</p></div><strong class="price">{{ product.price | currency:'USD':'symbol':'1.0-0' }}</strong></div>
+    </article>
+  } @empty { <p class="empty">No products match your filters.</p> }
+</div>
+<footer class="pagination"><button type="button" (click)="previous()" [disabled]="page() === 1">Previous</button><span>Page {{ page() }} of {{ pageCount() }}</span><button type="button" (click)="next()" [disabled]="page() === pageCount()">Next</button></footer>
