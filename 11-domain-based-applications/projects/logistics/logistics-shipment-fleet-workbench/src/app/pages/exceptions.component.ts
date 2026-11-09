@@ -1,0 +1,6 @@
+import {Component,inject} from '@angular/core';
+import {RouterLink} from '@angular/router';
+import {LogisticsDataService} from '../logistics-data.service';
+@Component({standalone:true,imports:[RouterLink],template:`
+<section class="page-head"><div><p class="eyebrow">SERVICE RECOVERY</p><h1>Operational exceptions</h1><p class="muted">Investigate shipment delays and delivery risks.</p></div><span class="pill">{{exceptions.length}} active items</span></section><section class="panel">@for(s of exceptions;track s.id){<div class="exception-card"><span class="alert big">!</span><div class="exception-content"><div class="exception-title"><strong>{{s.number}} · {{s.customer}}</strong><span class="priority" [class]="s.priority.toLowerCase()">{{s.priority}}</span></div><p>{{s.origin}} → {{s.destination}} · {{s.status}}</p>@for(e of s.exceptions;track e){<small>{{e}}</small>}<a class="link" [routerLink]="['/shipments',s.id]">Open shipment investigation →</a></div></div>}@empty{<p class="empty">No active shipment exceptions.</p>}</section>`})
+export class ExceptionsComponent{readonly data=inject(LogisticsDataService);get exceptions(){return this.data.shipments().filter(s=>s.exceptions.length>0||s.status==='Delayed');}}

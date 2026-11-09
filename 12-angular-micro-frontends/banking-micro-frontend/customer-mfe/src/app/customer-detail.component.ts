@@ -1,0 +1,31 @@
+import { Component, computed, inject } from '@angular/core';
+import { CurrencyPipe, DatePipe } from '@angular/common';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { CustomersService } from './customers.service';
+
+@Component({
+  standalone: true,
+  imports: [CurrencyPipe, DatePipe, RouterLink],
+  template: `
+    <section class="page"><a routerLink="/" class="back">← Back to customer directory</a>
+      @if (customer(); as person) {
+        <div class="heading"><div class="identity"><span class="avatar">{{initials(person.name)}}</span><div><p class="eyebrow">{{person.id}} · {{person.segment}} banking</p><h1>{{person.name}}</h1><p class="sub">{{person.city}} · Relationship manager: {{person.relationshipManager}}</p></div></div><span class="state" [class]="stateClass(person.status)">{{person.status}}</span></div>
+        <div class="summary"><article><small>RELATIONSHIP VALUE</small><strong>{{person.relationshipValue | currency:'INR':'symbol':'1.0-0'}}</strong></article><article><small>LINKED ACCOUNTS</small><strong>{{person.linkedAccounts.length}}</strong></article><article><small>RELATIONSHIP SINCE</small><strong>{{person.joinedOn | date:'mediumDate'}}</strong></article><article><small>NEXT KYC REVIEW</small><strong>{{person.kycReviewDue | date:'mediumDate'}}</strong></article></div>
+        <div class="columns"><div class="left">
+          <article class="panel"><h2>Customer profile</h2><div class="facts"><div><small>EMAIL ADDRESS</small><b>{{person.email}}</b></div><div><small>PHONE NUMBER</small><b>{{person.phone}}</b></div><div><small>HOME CITY</small><b>{{person.city}}</b></div><div><small>SEGMENT</small><b>{{person.segment}}</b></div><div><small>RELATIONSHIP MANAGER</small><b>{{person.relationshipManager}}</b></div><div><small>CUSTOMER SINCE</small><b>{{person.joinedOn | date:'longDate'}}</b></div></div></article>
+          <article class="panel"><h2>Service interaction history</h2><div class="timeline">@for (entry of person.interactions; track entry.id) {<div class="event"><span class="dot"></span><div><div class="event-head"><b>{{entry.subject}}</b><small>{{entry.date | date:'medium'}}</small></div><span class="channel">{{entry.channel}}</span><p>{{entry.outcome}}</p></div></div>}</div></article>
+        </div><aside class="panel linked"><h2>Linked accounts</h2><p>Masked account references associated with this customer.</p>@for (account of person.linkedAccounts; track account) {<div class="account"><span class="account-icon">▤</span><b>{{account}}</b><span>Linked</span></div>}<div class="review-box"><b>Review indicator</b><span>This profile status and KYC review date are illustrative. A production workflow must use authoritative compliance services.</span></div></aside></div>
+      } @else {<article class="panel">Customer not found. Return to the directory.</article>}
+    </section>
+  `,
+  styles: [`
+    .page{max-width:1250px;margin:auto;padding:28px 30px}.back{font-size:10px;color:#287b64;text-decoration:none}.heading{display:flex;justify-content:space-between;align-items:center;margin:20px 0}.identity{display:flex;align-items:center;gap:13px}.avatar{width:43px;height:43px;border-radius:50%;background:#e8f5ef;color:#28795f;display:grid;place-items:center;font-size:12px;font-weight:700}.eyebrow{font-size:8px;color:#287b64;letter-spacing:1px;font-weight:700;margin:0 0 5px}h1{font-size:23px;color:#20334d;margin:0}.sub{font-size:10px;color:#8b98a8;margin:6px 0}.state{font-size:8px;padding:6px 9px;border-radius:5px;background:#f0f4f8;color:#64768e}.state.active{background:#e8f6ef;color:#32845b}.state.review-required{background:#fff4e4;color:#a87728}.state.restricted{background:#ffedeb;color:#bd5149}.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}.summary article,.panel{background:#fff;border:1px solid #e7ecf2;border-radius:9px;padding:16px}.summary small{display:block;font-size:7px;letter-spacing:.8px;color:#8e9bab;font-weight:700}.summary strong{display:block;font-size:17px;color:#253a55;margin-top:10px}.columns{display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:13px}.left{display:grid;gap:13px}.panel h2{font-size:13px;color:#2c405a;margin:0 0 15px}.facts{display:grid;grid-template-columns:repeat(2,1fr);gap:17px}.facts small{display:block;font-size:8px;letter-spacing:.8px;color:#98a4b2;margin-bottom:6px}.facts b{font-size:10px;color:#42546d}.timeline{display:grid;gap:17px}.event{display:flex;gap:10px}.dot{width:9px;height:9px;border-radius:50%;background:#368d72;border:2px solid #e3f3ec;margin-top:3px;flex-shrink:0}.event-head{display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap}.event-head b{font-size:10px;color:#40536d}.event-head small{font-size:8px;color:#9aa5b2}.channel{display:inline-block;font-size:8px;color:#347b68;background:#edf7f2;padding:4px 6px;border-radius:4px;margin-top:6px}.event p{font-size:10px;color:#7e8b9c;margin:6px 0 0;line-height:1.5}.linked>p{font-size:9px;color:#8996a7;line-height:1.5;margin:-7px 0 14px}.account{display:flex;align-items:center;gap:8px;padding:10px 0;border-top:1px solid #edf0f4}.account-icon{width:25px;height:25px;border-radius:6px;background:#edf5f2;color:#32816a;display:grid;place-items:center}.account b{font-size:10px;color:#43556d}.account>span:last-child{margin-left:auto;font-size:8px;color:#38845e}.review-box{margin-top:15px;padding:11px;background:#fff7e8;border-radius:6px;color:#8b7955;font-size:9px;line-height:1.6}.review-box b,.review-box span{display:block}.review-box b{color:#765e2d;margin-bottom:4px}@media(max-width:850px){.columns{grid-template-columns:1fr}}@media(max-width:650px){.page{padding:22px 15px}.heading{align-items:flex-start;flex-direction:column;gap:10px}.summary{grid-template-columns:repeat(2,1fr)}.facts{grid-template-columns:1fr}}
+  `]
+})
+export class CustomerDetailComponent {
+  private readonly route = inject(ActivatedRoute);
+  private readonly customers = inject(CustomersService);
+  readonly customer = computed(() => this.customers.getById(this.route.snapshot.paramMap.get('id') || ''));
+  initials(name: string): string { return name.split(' ').filter((part) => part.length > 0).map((part) => part.charAt(0)).join('').toUpperCase(); }
+  stateClass(value: string): string { return value.toLowerCase().replaceAll(' ', '-'); }
+}

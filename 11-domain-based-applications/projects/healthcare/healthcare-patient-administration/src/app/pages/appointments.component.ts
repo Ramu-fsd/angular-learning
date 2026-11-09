@@ -1,0 +1,15 @@
+import {Component,inject,signal} from '@angular/core';
+import {DatePipe} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {HealthcareDataService} from '../healthcare-data.service';
+import {AppointmentStatus} from '../models';
+@Component({standalone:true,imports:[DatePipe,FormsModule],template:`
+<section class="page-head"><div><p class="eyebrow">SCHEDULING</p><h1>Appointments</h1><p class="muted">Coordinate patient visits across clinical departments.</p></div><span class="pill">{{data.appointments().length}} appointments</span></section>
+<section class="detail-grid"><article class="panel"><h2>Appointment schedule</h2><p class="muted">Update check-in and visit completion status.</p>@for(a of data.appointments();track a.id){<div class="appointment"><div class="time">{{a.time}}<small>{{a.date|date:'dd MMM'}}</small></div><div class="appt-info"><strong>{{a.patientName}}</strong><small>{{a.department}} · {{a.clinician}} · {{a.type}}</small></div><select [ngModel]="a.status" (ngModelChange)="update(a.id,$event)" aria-label="Appointment status"><option>Scheduled</option><option>Checked In</option><option>Completed</option><option>Cancelled</option></select></div>}</article>
+<article class="panel"><h2>Book an appointment</h2><p class="muted">Create a synthetic schedule entry.</p><form (ngSubmit)="create()"><label>Patient</label><select name="patient" [(ngModel)]="patientId" required><option value="">Select patient</option>@for(p of data.patients();track p.id){<option [value]="p.id">{{p.name}}</option>}</select><label>Department</label><select name="department" [(ngModel)]="department"><option>General Medicine</option><option>Cardiology</option><option>Orthopedics</option><option>Dermatology</option><option>Pediatrics</option></select><label>Clinician</label><input name="clinician" [(ngModel)]="clinician" required placeholder="Dr. Name"><label>Date</label><input type="date" name="date" [(ngModel)]="date" required><label>Time</label><input type="time" name="time" [(ngModel)]="time" required><label>Visit type</label><select name="type" [(ngModel)]="type"><option>Consultation</option><option>Follow-up</option><option>Review</option></select><button class="primary full" type="submit" [disabled]="!patientId||!clinician.trim()||!date||!time">Create appointment</button></form><div class="notice">Scheduling availability and clinician conflicts are not validated in this frontend demo.</div></article></section>`})
+export class AppointmentsComponent{
+ readonly data=inject(HealthcareDataService);
+ patientId='';department='General Medicine';clinician='';date='2026-11-12';time='09:00';type='Consultation';
+ update(id:string,status:AppointmentStatus){this.data.updateAppointment(id,status);}
+ create(){const p=this.data.patients().find(x=>x.id===this.patientId);if(!p)return;this.data.addAppointment({id:'APT-'+Date.now(),patientId:p.id,patientName:p.name,department:this.department,clinician:this.clinician.trim(),date:this.date,time:this.time,type:this.type,status:'Scheduled'});this.patientId='';this.clinician='';}
+}

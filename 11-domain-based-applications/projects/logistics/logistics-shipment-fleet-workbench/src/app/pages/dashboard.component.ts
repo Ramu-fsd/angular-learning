@@ -1,0 +1,14 @@
+import {Component,inject} from '@angular/core';
+import {DatePipe} from '@angular/common';
+import {RouterLink} from '@angular/router';
+import {LogisticsDataService} from '../logistics-data.service';
+@Component({standalone:true,imports:[DatePipe,RouterLink],template:`
+<section class="page-head"><div><p class="eyebrow">NETWORK CONTROL TOWER</p><h1>Logistics overview</h1><p class="muted">Monitor shipment movement, fleet utilization and delivery exceptions.</p></div><a class="primary" routerLink="/shipments">Open shipment queue →</a></section>
+<section class="stats"><article class="stat"><span class="ico blue">▣</span><small>Active shipments</small><strong>{{data.activeShipments()}}</strong><label>Currently in the network</label></article><article class="stat"><span class="ico red">!</span><small>Delayed / exceptions</small><strong>{{data.delayedShipments()}}</strong><label>Need operational attention</label></article><article class="stat"><span class="ico violet">▤</span><small>Fleet vehicles</small><strong>{{data.vehicles().length}}</strong><label>Across sample depots</label></article><article class="stat"><span class="ico green">✓</span><small>Delivered today</small><strong>{{delivered}}</strong><label>Completed shipment records</label></article></section>
+<section class="panel"><div class="panel-head"><div><h2>Shipment movement</h2><p class="muted">Current priority loads</p></div><a class="link" routerLink="/shipments">View all →</a></div><div class="table-wrap"><table><thead><tr><th>Shipment</th><th>Customer</th><th>Route</th><th>ETA</th><th>Vehicle</th><th>Priority</th><th>Status</th></tr></thead><tbody>@for(s of data.shipments().slice(0,5);track s.id){<tr><td><a class="link" [routerLink]="['/shipments',s.id]">{{s.number}}</a></td><td>{{s.customer}}</td><td>{{s.origin}} → {{s.destination}}</td><td>{{s.eta|date:'dd MMM, HH:mm'}}</td><td>{{s.vehicleId||'Unassigned'}}</td><td><span class="priority" [class]="s.priority.toLowerCase()">{{s.priority}}</span></td><td><span class="status">{{s.status}}</span></td></tr>}</tbody></table></div></section>
+<section class="panel"><div class="panel-head"><div><h2>Operational exceptions</h2><p class="muted">Shipments with active disruptions</p></div><a class="link" routerLink="/exceptions">Review queue →</a></div>@for(s of exceptionList;track s.id){<div class="exception-row"><span class="alert">!</span><div><strong>{{s.number}} · {{s.customer}}</strong><small>{{s.exceptions.join(' · ')||s.status}}</small></div><a class="link" [routerLink]="['/shipments',s.id]">Investigate →</a></div>}@empty{<p class="muted">No active exceptions in the sample data.</p>}</section>`})
+export class DashboardComponent{
+ readonly data=inject(LogisticsDataService);
+ get delivered(){return this.data.shipments().filter(s=>s.status==='Delivered').length;}
+ get exceptionList(){return this.data.shipments().filter(s=>s.exceptions.length>0||s.status==='Delayed');}
+}

@@ -1,0 +1,30 @@
+import {Injectable,computed,signal} from '@angular/core';
+import {CartLine,Order,OrderStatus,Product,ReturnRequest,ReturnStatus} from './models';
+@Injectable({providedIn:'root'})
+export class StoreService{
+ readonly products=signal<Product[]>([
+ {id:'PR-101',sku:'ELC-1001',name:'Wireless Noise-Cancelling Headphones',category:'Electronics',description:'Over-ear wireless audio with adaptive noise cancellation and long battery life.',price:8499,stock:28,rating:4.7,badge:'Bestseller'},
+ {id:'PR-102',sku:'ELC-1002',name:'Smart Fitness Watch',category:'Electronics',description:'Activity tracking, notifications and multi-day battery life.',price:6299,stock:16,rating:4.5},
+ {id:'PR-103',sku:'HOM-2001',name:'Insulated Travel Bottle',category:'Home & Living',description:'Double-wall stainless steel bottle for everyday use.',price:1299,stock:54,rating:4.6},
+ {id:'PR-104',sku:'APP-3001',name:'Everyday Running Shoes',category:'Fashion',description:'Lightweight cushioned shoes for daily training and walking.',price:3999,stock:11,rating:4.4,badge:'Popular'},
+ {id:'PR-105',sku:'HOM-2002',name:'Desk Organizer Set',category:'Home & Living',description:'Modular organizer for a clean and productive workspace.',price:899,stock:42,rating:4.2},
+ {id:'PR-106',sku:'APP-3002',name:'Classic Cotton Hoodie',category:'Fashion',description:'Soft cotton blend hoodie with a relaxed everyday fit.',price:2199,stock:0,rating:4.3}
+ ]);
+ readonly cart=signal<CartLine[]>([]);
+ readonly orders=signal<Order[]>([
+ {id:'OR-5001',number:'MK-2026-5001',customer:'Aarav Mehta',email:'aarav@example.test',placedAt:'2026-11-08T10:20:00',status:'Shipped',paymentStatus:'Captured',shippingAddress:'Hyderabad, Telangana',carrier:'BlueDart',trackingNumber:'BD78451290',lines:[{productId:'PR-101',name:'Wireless Noise-Cancelling Headphones',sku:'ELC-1001',quantity:1,unitPrice:8499},{productId:'PR-103',name:'Insulated Travel Bottle',sku:'HOM-2001',quantity:2,unitPrice:1299}],total:11097,timeline:[{label:'Order placed',date:'08 Nov · 10:20',done:true},{label:'Payment confirmed',date:'08 Nov · 10:21',done:true},{label:'Packed at warehouse',date:'08 Nov · 16:45',done:true},{label:'Handed to carrier',date:'09 Nov · 08:15',done:true},{label:'Delivered',date:'Pending',done:false}]},
+ {id:'OR-5002',number:'MK-2026-5002',customer:'Diya Sharma',email:'diya@example.test',placedAt:'2026-11-09T09:05:00',status:'Processing',paymentStatus:'Captured',shippingAddress:'Pune, Maharashtra',carrier:'Delhivery',trackingNumber:'DL55210983',lines:[{productId:'PR-104',name:'Everyday Running Shoes',sku:'APP-3001',quantity:1,unitPrice:3999}],total:3999,timeline:[{label:'Order placed',date:'09 Nov · 09:05',done:true},{label:'Payment confirmed',date:'09 Nov · 09:06',done:true},{label:'Packed at warehouse',date:'In progress',done:false},{label:'Handed to carrier',date:'Pending',done:false},{label:'Delivered',date:'Pending',done:false}]},
+ {id:'OR-5003',number:'MK-2026-5003',customer:'Kabir Singh',email:'kabir@example.test',placedAt:'2026-11-09T11:40:00',status:'Confirmed',paymentStatus:'Captured',shippingAddress:'Bengaluru, Karnataka',carrier:'—',trackingNumber:'—',lines:[{productId:'PR-102',name:'Smart Fitness Watch',sku:'ELC-1002',quantity:1,unitPrice:6299}],total:6299,timeline:[{label:'Order placed',date:'09 Nov · 11:40',done:true},{label:'Payment confirmed',date:'09 Nov · 11:41',done:true},{label:'Packed at warehouse',date:'Pending',done:false},{label:'Handed to carrier',date:'Pending',done:false},{label:'Delivered',date:'Pending',done:false}]}
+ ]);
+ readonly returns=signal<ReturnRequest[]>([
+ {id:'RT-9001',orderNumber:'MK-2026-5001',customer:'Aarav Mehta',item:'Insulated Travel Bottle',reason:'Item arrived damaged',requestedAt:'2026-11-09',status:'Requested',refund:1299},
+ {id:'RT-9002',orderNumber:'MK-2026-4992',customer:'Ishita Rao',item:'Classic Cotton Hoodie',reason:'Size did not fit',requestedAt:'2026-11-07',status:'Approved',refund:2199}
+ ]);
+ readonly cartCount=computed(()=>this.cart().reduce((s,l)=>s+l.quantity,0));
+ readonly cartTotal=computed(()=>this.cart().reduce((s,l)=>{const p=this.products().find(x=>x.id===l.productId);return s+(p?.price??0)*l.quantity;},0));
+ addToCart(id:string){const p=this.products().find(x=>x.id===id);if(!p||p.stock<1)return;this.cart.update(lines=>{const found=lines.find(l=>l.productId===id);return found?lines.map(l=>l.productId===id?{...l,quantity:Math.min(l.quantity+1,p.stock)}:l):[...lines,{productId:id,quantity:1}];});}
+ setQuantity(id:string,quantity:number){const p=this.products().find(x=>x.id===id);this.cart.update(lines=>quantity<1?lines.filter(l=>l.productId!==id):lines.map(l=>l.productId===id?{...l,quantity:Math.min(quantity,p?.stock??quantity)}:l));}
+ placeOrder():string|null{const lines=this.cart();if(!lines.length)return null;const orderLines=lines.map(l=>{const p=this.products().find(x=>x.id===l.productId)!;return{productId:p.id,name:p.name,sku:p.sku,quantity:l.quantity,unitPrice:p.price};});const id='OR-'+Date.now();const order:Order={id,number:'MK-'+new Date().getFullYear()+'-'+id.slice(-6),customer:'Demo Customer',email:'customer@example.test',placedAt:new Date().toISOString(),status:'Placed',paymentStatus:'Demo only',shippingAddress:'Hyderabad, Telangana',carrier:'—',trackingNumber:'—',lines:orderLines,total:orderLines.reduce((s,l)=>s+l.quantity*l.unitPrice,0),timeline:[{label:'Order placed',date:'Just now',done:true},{label:'Payment confirmed',date:'Pending',done:false},{label:'Packed at warehouse',date:'Pending',done:false},{label:'Handed to carrier',date:'Pending',done:false},{label:'Delivered',date:'Pending',done:false}]};this.orders.update(items=>[order,...items]);this.cart.set([]);return id;}
+ updateOrderStatus(id:string,status:OrderStatus){const stages:OrderStatus[]=['Placed','Confirmed','Processing','Shipped','Delivered','Cancelled'];this.orders.update(items=>items.map(o=>o.id===id?{...o,status,timeline:o.timeline.map((t,i)=>({...t,done:status!=='Cancelled'&&i<=Math.max(0,stages.indexOf(status))}))}:o));}
+ updateReturn(id:string,status:ReturnStatus){this.returns.update(items=>items.map(r=>r.id===id?{...r,status}:r));}
+}

@@ -1,0 +1,5 @@
+import { Component, inject } from '@angular/core';
+import { CurrencyPipe } from '@angular/common';
+import { BankingDataService } from '../../core/banking-data.service';
+@Component({standalone:true,imports:[CurrencyPipe],template:`<section class="page"><h1>Accounts</h1><p>Accounts available in this demo customer profile.</p><div class="grid">@for(a of data.accounts();track a.accountId){<article><span>{{a.accountType}}</span><h2>{{a.displayName}}</h2><small>{{a.maskedNumber}}</small><strong>{{a.availableBalance|currency:a.currency}}</strong><small>Available balance · {{a.accountId}}</small></article>}</div></section>`,styles:[`.page{padding:30px}h1{font-size:25px}p,small{color:#7d899c;font-size:12px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:20px}article{background:white;border:1px solid #e7ebf2;border-radius:10px;padding:20px}article span{font-size:9px;color:#315bb7;font-weight:700}h2{font-size:16px}article strong{display:block;font-size:23px;margin:20px 0 8px}`]})
+export class AccountsComponent { readonly data=inject(BankingDataService); }
